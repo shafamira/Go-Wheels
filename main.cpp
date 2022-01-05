@@ -16,21 +16,21 @@ void displayReq();
 void carBooking();
 void goWheelsArt();
 void displayExitArt();
-
+int noBooking(int n);
 // Struct
 struct User{
-    char username[100];
-    char password[100];
+    char username[50];
+    char password[50];
     int money;
 };
 
 struct typeCar{
-    char nameCar[100];
-    int productionYear; 
+    char nameCar[50];
+    int yearProduction; 
     int price;
     int kilometers;
     double rate;
-    char reasons[1000];
+    char reasons[100];
 };
 
 struct Car{
@@ -41,25 +41,25 @@ struct Car{
 struct AdminDetails{
 	char nameCar[50];
 	int Duration;
-	char Driver[5];
+	char Driver[4];
 };
 
 struct Admin{
-	char Name[100];
-	char Address[100];
-	int PhoneNum;
+	char Name[255];
+	char Address[255];
+	long int PhoneNum;
   struct AdminDetails pc;
 };
 
 int main(){
     goWheelsArt();
     int ch;
-    MM:
+    Logout:
     // Main Menu
-    puts("\n\t(1) Car Info View"); 
-    puts("\t(2) Car Request"); 
-    puts("\t(3) Car Booking\n\n");
-    puts("\t(0) Logout\n");
+    puts("\n\t[1]> Car Info View"); 
+    puts("\t[2]> Car Request"); 
+    puts("\t[3]> Car Booking\n\n");
+    puts("\t[0]> Logout\n");
     printf(" >> "); scanf("%d", &ch); 
     fflush(stdin);
 
@@ -70,14 +70,14 @@ int main(){
             break;
         } else if (ch==2){
             carRequest();
-            goto MM;
+            goto Logout;
             break;
         } else if (ch==3){
             carBooking();
             break;
         } else if (ch==1){
             infoCar();
-            goto MM;
+            goto Logout;
             break;
         }
     }
@@ -93,9 +93,9 @@ void infoCar(){
     displayAll();
 
     int cho;
-    puts("\t(1) Sort by Price");
-    puts("\t(2) Sort by Production Yearn\n");
-    puts("\t(0) Go Back");
+    puts("\t[1]> Sort by Price");
+    puts("\t[2]> Sort by Year of Production\n");
+    puts("\t[0]> Go Back");
     printf(" >> "); scanf("%d", &cho);
 
     while(1){
@@ -107,8 +107,8 @@ void infoCar(){
             puts("\t+---------------+");
             puts("\t| Sort by Price |");
             puts("\t+---------------+\n");
-            puts("\t(1) Low-High\n\t(2) High-Low\n");
-            puts("\t(0) Go Back");
+            puts("\t[1]> Low-High\n\t[2]> High-Low\n");
+            puts("\t[0]> Go Back");
             printf(" >> "); scanf("%d", &cp);
 
             if(cp==1){
@@ -126,8 +126,8 @@ void infoCar(){
             puts("\t+----------------------------+");
             puts("\t| Sort by Year of Production |");
             puts("\t+----------------------------+\n");
-            puts("\t(1) Old-New\n\t(2) New-Old\n");
-            puts("\t(0) Go Back");
+            puts("\t[1]> Old-New\n\t[2]> New-Old\n");
+            puts("\t[0]> Go Back");
             printf(" >> "); scanf("%d", &cy);
 
             if(cy==1){
@@ -155,25 +155,25 @@ void sortPrice(struct Car *data, int len){
 
 // function utk display judul di tabel
 void displayJudul(){
-    puts("\t+--------------------------------------------------------------------------+");
-    puts("\t| Brand          | Rate   | Name          | Production Year | Price (/day) |");
-    puts("\t+--------------------------------------------------------------------------+");
+    puts("\t+-----------------------------------------------------------------------------+");
+    puts("\t| Brand          | Rate   | Name          | Year of Production | Price (/day) |");
+    puts("\t+-----------------------------------------------------------------------------+");
 }
 
 // function utk display tabel berdasarkan file carList.txt tanpa dimanipulasi
 void displayAll(){
     int i = 0, j;
     FILE *fp = fopen("./database/carList.txt", "r");
-    while(fscanf(fp, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.productionYear, &cars[i].tc.price) != EOF){
+    while(fscanf(fp, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.yearProduction, &cars[i].tc.price) != EOF){
         i++;
     }
     fclose(fp);
 
     displayJudul();
         for (int j = 0; j < i; j++){
-            printf("\t| %-15s| %-6.2lf | %-13s | %-15d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.productionYear, cars[j].tc.price);
+            printf("\t| %-15s| %-6.2lf | %-13s | %-18d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.yearProduction, cars[j].tc.price);
         }
-    puts("\t+--------------------------------------------------------------------------+\n");
+    puts("\t+-----------------------------------------------------------------------------+\n");
 }
 
 // utk display tabel yg udah di-sorting
@@ -186,7 +186,7 @@ int displaySorted(int choice){
 
     int i = 0, j;
     FILE *fp = fopen("./database/carList.txt", "r");
-    while(fscanf(fp, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.productionYear, &cars[i].tc.price) != EOF){
+    while(fscanf(fp, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.yearProduction, &cars[i].tc.price) != EOF){
         i++;
     }
     fclose(fp);
@@ -195,16 +195,16 @@ int displaySorted(int choice){
         sortPrice(cars, i);
         displayJudul();
         for (int j = 0; j < i; j++){
-            printf("\t| %-15s| %-6.2lf | %-13s | %-15d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.productionYear, cars[j].tc.price);
+            printf("\t| %-15s| %-6.2lf | %-13s | %-18d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.yearProduction, cars[j].tc.price);
         }
-        puts("\t+--------------------------------------------------------------------------+\n");
+        puts("\t+-----------------------------------------------------------------------------+\n");
     } else if(choice==1){ 
         sortPrice(cars, i);
         displayJudul();
         for(int j = i-1; j>=0; j--){
-            printf("\t| %-15s| %-6.2lf | %-13s | %-15d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.productionYear, cars[j].tc.price);
+            printf("\t| %-15s| %-6.2lf | %-13s | %-18d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.yearProduction, cars[j].tc.price);
         }
-        puts("\t+--------------------------------------------------------------------------+\n");
+        puts("\t+-----------------------------------------------------------------------------+\n");
     } else if (choice==3){
 
     } else if (choice==4){
@@ -222,8 +222,8 @@ void carRequest(){
     displayReq();
 
     int choice;
-    printf("\t(1) Add Car Request\n");
-    printf("\t(2) Remove Car Request\n\n");
+    printf("\t[1]> Add Car Request\n");
+    printf("\t[2]> Remove Car Request\n\n");
     printf(" >> "); scanf("%d", &choice); fflush(stdin);
 
     if(choice==1){
@@ -231,7 +231,7 @@ void carRequest(){
         printf("\tCar Brand\t\t: "); scanf("%[^\n]", cars->brandCar); 
         printf("\tRate Car\t\t: "); getchar(); scanf("%lf", &cars->tc.rate); 
         printf("\tCar Name\t\t: "); getchar(); scanf("%[^\n]", cars->tc.nameCar); 
-        printf("\tYear of Production\t: " ); getchar(); scanf("%d", &cars->tc.productionYear);
+        printf("\tYear of Production\t: " ); getchar(); scanf("%d", &cars->tc.yearProduction);
         printf("\tPrice Request (/day)\t: "); getchar(); scanf("%d", &cars->tc.price);
         printf("\n\tAnd lastly, please write down your reasons for requesting that car\n");
         printf("\tbecause your reasons can be a consideration for us\n");
@@ -242,7 +242,7 @@ void carRequest(){
         fclose(fr);
 
         FILE *fp = fopen("./database/reqList.txt", "a");
-        fprintf(fp,"%s#%.2lf#%s#%d#%d\n", cars->brandCar, cars->tc.rate, cars->tc.nameCar, cars->tc.productionYear, cars->tc.price);
+        fprintf(fp,"%s#%.2lf#%s#%d#%d\n", cars->brandCar, cars->tc.rate, cars->tc.nameCar, cars->tc.yearProduction, cars->tc.price);
         fclose(fp);
 
         printf("\n");
@@ -258,45 +258,61 @@ void carRequest(){
 void displayReq(){
     int i = 0, j;
     FILE *fa = fopen("./database/reqList.txt", "r");
-    while(fscanf(fa, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.productionYear, &cars[i].tc.price) != EOF){
+    while(fscanf(fa, "%[^#]#%lf#%[^#]#%d#%d\n", cars[i].brandCar, &cars[i].tc.rate, cars[i].tc.nameCar, &cars[i].tc.yearProduction, &cars[i].tc.price) != EOF){
         i++;
     }
     fclose(fa);
     displayJudul();
     for(int j = 0; j < i; j++){
-        printf("\t| %-15s| %-6.2lf | %-13s | %-15d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.productionYear, cars[j].tc.price);
+        printf("\t| %-15s| %-6.2lf | %-13s | %-18d | %-12d |\n", cars[j].brandCar, cars[j].tc.rate, cars[j].tc.nameCar, cars[j].tc.yearProduction, cars[j].tc.price);
     }
-    puts("\t+--------------------------------------------------------------------------+\n");
+    puts("\t+-----------------------------------------------------------------------------+\n");
 }
-
+//function untuk mendapatkan no booking
+int noBooking(int n){
+  int number[10];
+  FILE *fb = fopen("./database/noBooking.txt","r");
+  int i = 0;
+  while(fscanf(fb,"%d",&number[i]) != EOF){
+    i++;
+  }
+  return number[n];
+}
 // function apabila user milih (3) di main menu
-int noBooking = 1;
 void carBooking(){
     profile:
     puts("\t+-------------+");
     puts("\t| Car Booking |");
     puts("\t+-------------+\n");
 
-    //biodata user
-    //shaf kalau aku buat variabel global bae? kykyna aman2 aja deh jd itsokey
-    struct Admin infoPelanggan;
-    puts("\tPlease fill Your Biodata");
-    printf("\tName\t\t : "); scanf(" %[^\n]",infoPelanggan.Name);
-    printf("\tAddress\t\t : "); scanf(" %[^\n]",infoPelanggan.Address);getchar();
-    printf("\tPhone Number\t : "); scanf("%d",&infoPelanggan.PhoneNum);getchar();
-
-    puts("\n\tFill in the information below to continue booking your car rental");
-    printf("\tCar Name\t\t\t: "); scanf(" %[^\n]",infoPelanggan.pc.nameCar);
-    printf("\tCar Rent Duration (/day)\t: "); scanf("%d",&infoPelanggan.pc.Duration); getchar();
-    printf("\tHire Driver (Yes/No)\t\t: "); scanf(" %[^\n]",infoPelanggan.pc.Driver); getchar();
-
     //scan file carlist.txt untuk menentukan harga rental mobil
     FILE *fp = fopen("./database/carList.txt","r");
     int i=0;
     while(fscanf(fp,"%[^#]#%lf#%[^#]#%d#%d",cars[i].brandCar,&cars[i].tc.rate,
-        cars[i].tc.nameCar,&cars[i].tc.productionYear,&cars[i].tc.price) != EOF){
+        cars[i].tc.nameCar,&cars[i].tc.yearProduction,&cars[i].tc.price) != EOF){
             i++;
     }
+
+    //biodata user
+    struct Admin infoPelanggan;
+    puts("\tPlease fill Your Biodata");
+    printf("\tName\t\t : "); scanf(" %[^\n]",infoPelanggan.Name);
+    printf("\tAddress\t\t : "); scanf(" %[^\n]",infoPelanggan.Address);getchar();
+    printf("\tPhone Number\t : "); scanf("%ld",&infoPelanggan.PhoneNum);getchar();
+    puts("\n\tFill in the information below to continue booking your car rental");
+    name:
+    printf("\tCar Name\t\t: "); scanf(" %[^\n]",infoPelanggan.pc.nameCar);
+    int name = 0;
+    for(int j=0;j<=i;j++){
+        if(strcmp(infoPelanggan.pc.nameCar ,cars[j].tc.nameCar) == 0)
+          name++;
+    }
+    if(name == 0){
+      printf("\n\tCar Not Found! Please Try Again\n\n");
+      goto name;
+    }
+    printf("\tRent Duration (/day)\t: "); scanf("%d",&infoPelanggan.pc.Duration); getchar();
+    printf("\tHire Driver (Yes/No)\t: "); scanf(" %[^\n]",infoPelanggan.pc.Driver); getchar();
 
     //searching mobil & harga
     long int harga = 0;
@@ -312,17 +328,29 @@ void carBooking(){
     }
 
     //harga akhir
-    printf("\n\tTotal Price\t\t: %ld\n",harga);
+    printf("\tTotal Price\t\t: %ld\n",harga);
     int uangMuka = harga*0.4;
-    printf("\tDown payment to be paid\t: %d\n",uangMuka);
+    printf("\tDown payment\t\t: %d\n",uangMuka);
 
     char question;
     printf("\n\tAre you sure with this information? (Y/N) "); scanf("%c",&question); getchar();
+
+    int bookNumber = uangMuka % 9;
+    int number = noBooking(bookNumber);
     if(question == 'Y' || question == 'y'){
+        printf("\t_________________________________________________________________________________________\n\n");
+        printf("\tNo Booking    : %d\n",number);
+        printf("\tName          : %s\n",infoPelanggan.Name);
+        printf("\tAddress       : %s\n", infoPelanggan.Address);
+        printf("\tPhone number  : %ld\n", infoPelanggan.PhoneNum);
+        printf("\tCar Name      : %s\n", infoPelanggan.pc.nameCar);
+        printf("\tRent Duration : %d day\n", infoPelanggan.pc.Duration);
+        printf("\tDriver        : %s\n", infoPelanggan.pc.Driver);
+        printf("\tTotal Price   : %ld\n",harga);
+        printf("\tDown payment  : %d\n",uangMuka);
+        printf("\n\tPlease pay your down payment first and you can take the car at Go-Wheels Rent Car nearby\n");
+        printf("\t=========================================================================================\n");        
         displayExitArt();
-        printf("\n\tNo Booking : 0%d\n",noBooking);
-        printf("\tPlease pay your down payment first and you can take the car at Go-Wheels Rent Car nearby\n");
-        noBooking++;
     } else if (question == 'N'|| question == 'n'){
         printf("\n") ;
         goto profile;
