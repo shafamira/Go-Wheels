@@ -12,3 +12,5 @@ Mitsubishi#3.50#X-Pander#2019#300000
 Toyota#3.20#Raize#2021#350000
 Suzuki#3.20#Jimny#2018#275000
 Honda#3.40#Jazz#2019#250000
+Tesla#3.40#Model S#2021#300000
+Toyota#4.70#Corolla#1999#250000
