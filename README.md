@@ -1,2 +1,2 @@
 # Go-Wheels
-Final C Project for Algorithm &amp; Programming
+C Final Project for Algorithm &amp; Programming
